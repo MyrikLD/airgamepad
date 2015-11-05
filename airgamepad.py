@@ -68,7 +68,7 @@ def main():
         KEY_ESC: BTN_MODE
     }
     joy = uinput.Device(evs,
-                        name="My Microsoft X-Box 360 pad",
+                        name="Microsoft X-Box 360 pad",
                         bustype=0x03,
                         vendor=0x45e,
                         product=0x28e,
