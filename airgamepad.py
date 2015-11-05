@@ -1,15 +1,14 @@
 from __future__ import print_function
 import uinput
 from uinput.ev import *
-from sys import argv, exit
 from select import select
-from evdev import ecodes, InputDevice, list_devices, AbsInfo, events
-from enum import Enum
+from evdev import ecodes, InputDevice, AbsInfo
 
 air_kbd = "/dev/input/by-id/usb-SAGE_SAGE_AirMouse-event-kbd"
 air_mouse = "/dev/input/by-id/usb-SAGE_SAGE_AirMouse-if01-event-mouse"
 
 evfmt = '{} ({:<4}), {}'
+
 
 def print_event(e):
     if e.type != ecodes.EV_SYN:
@@ -23,6 +22,7 @@ def print_event(e):
 
 device_mouse = InputDevice(air_mouse)
 device_kbd = InputDevice(air_kbd)
+
 
 def print_capabs(dev):
     capabs = dev.capabilities(verbose=True)
@@ -39,21 +39,8 @@ def print_capabs(dev):
                 print('    Code {:<4} {}'.format(s, i[1]))
         print('')
 
+
 def main():
-    """
-        Event type 1 (EV_KEY)
-            Event code 304 (BTN_SOUTH)
-            Event code 305 (BTN_EAST)
-            Event code 307 (BTN_NORTH)
-            Event code 308 (BTN_WEST)
-            Event code 310 (BTN_TL)
-            Event code 311 (BTN_TR)
-            Event code 314 (BTN_SELECT)
-            Event code 315 (BTN_START)
-            Event code 316 (BTN_MODE)
-            Event code 317 (BTN_THUMBL)
-            Event code 318 (BTN_THUMBR)
-    """
     evs = {
         BTN_SOUTH,
         BTN_EAST,
@@ -66,19 +53,19 @@ def main():
         BTN_MODE,
         BTN_THUMBL,
         BTN_THUMBR,
-        ABS_X+(0, 1024, 0, 0),
-        ABS_Y+(0, 1024, 0, 0)
+        ABS_X + (0, 1024, 0, 0),
+        ABS_Y + (0, 1024, 0, 0)
     }
     keymap = {
         KEY_UP: BTN_SOUTH,
         KEY_DOWN: BTN_EAST,
         KEY_LEFT: BTN_NORTH,
         KEY_RIGHT: BTN_WEST,
-        (1, 272):BTN_TL,
-        BTN_RIGHT:BTN_TR,
-        KEY_PLAYPAUSE:BTN_SELECT,
-        KEY_ENTER:BTN_START,
-        KEY_ESC:BTN_MODE
+        (1, 272): BTN_TL,
+        BTN_RIGHT: BTN_TR,
+        KEY_PLAYPAUSE: BTN_SELECT,
+        KEY_ENTER: BTN_START,
+        KEY_ESC: BTN_MODE
     }
     joy = uinput.Device(evs,
                         name="My Microsoft X-Box 360 pad",
@@ -127,5 +114,6 @@ def main():
                             joy.emit(ABS_X, 1024)
                         else:
                             joy.emit(ABS_X, 512)
+
 
 main()
