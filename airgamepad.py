@@ -72,4 +72,5 @@ def main():
                         joy.emit(ABS_X, 1024 if ev.value else 512)
 
 
-main()
+if __name__ == '__main__':
+    main()
